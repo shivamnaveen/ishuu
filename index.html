@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ShivamCodes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg1:#d3565a;
+      --bg2:#fad0c4;
+      --bg3:#fbc2eb;
+      --bg4:#a18cd1;
+    }
+    * { box-sizing:border-box; }
+    html,body { height:100%; margin:0; overflow:hidden; }
+    body {
+      font-family:"Poppins",sans-serif;
+      background: linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg3),var(--bg4));
+      background-size: 400% 400%;
+      animation: gradientShift 18s ease-in-out infinite;
+      color:#fff;
+    }
+    @keyframes gradientShift {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+    .vignette {
+      position:fixed;inset:0;pointer-events:none;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,.0) 40%, rgba(0,0,0,.25) 100%);
+      mix-blend-mode: multiply;
+    }
+    .container {
+      position:relative; height:100%;
+      display:grid; place-items:center; padding:24px;
+    }
+    .card {
+      position:relative;
+      width:min(78vw, 420px);
+      aspect-ratio: 1/1;
+      border-radius: 28px;
+      padding:18px;
+      backdrop-filter: blur(10px) saturate(120%);
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.35);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    }
+    .photo-frame {
+      position:relative; width:100%; height:100%;
+      border-radius:22px; overflow:hidden;
+      display:grid; place-items:center;
+      border: 2px solid rgba(255,255,255,.7);
+    }
+    .photo-frame img {
+      position:absolute; inset:0; width:100%; height:100%;
+      object-fit:cover;
+    }
+    .title {
+      position:fixed; top:24px; left:50%; transform:translateX(-50%);
+      margin:0; text-align:center; font-weight:800;
+      font-size: clamp(22px, 5vw, 36px);
+      text-shadow: 0 6px 20px rgba(0,0,0,.45);
+    }
+    .subtitle {
+      position:fixed; top:calc(24px + clamp(22px, 5vw, 36px) + 8px);
+      left:50%; transform:translateX(-50%);
+      margin:0; text-align:center; font-weight:400;
+      font-size: clamp(12px, 2.2vw, 16px);
+      text-shadow: 0 4px 16px rgba(0,0,0,.35);
+      opacity:.9;
+    }
+    .sky { position:fixed; inset:0; overflow:hidden; pointer-events:none; }
+    .sorry {
+      position:absolute;
+      left:0; top:0;
+      transform: translate(var(--startX), 110vh) rotate(var(--rot));
+      font-weight:800; letter-spacing:.5px;
+      opacity:.85; white-space:nowrap;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
+      animation: fly var(--dur) linear forwards;
+      will-change: transform, opacity;
+    }
+    @keyframes fly {
+      0%{ transform: translate(var(--startX), 110vh) rotate(var(--rot)); opacity:0; }
+      8%{ opacity:.9; }
+      100%{ transform: translate(var(--endX), -12vh) rotate(calc(var(--rot) + 20deg)); opacity:0; }
+    }
+    .cycle-container {
+      position:fixed;
+      bottom:10px;
+      left:-200px;
+      width:160px;
+      text-align:center;
+      animation: ride 12s linear infinite;
+      opacity:0.9;
+    }
+    .cycle-container img {
+      width:100%;
+      display:block;
+    }
+    .cycle-speed {
+      font-size:18px;
+      font-weight:600;
+      margin-top:4px;
+      color:#fff;
+      text-shadow:0 2px 8px rgba(0,0,0,0.6);
+    }
+    @keyframes ride {
+      0% { left:-200px; }
+      100% { left:110%; }
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="Arijit Singh - Yeh Fitoor Mera.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="sky" id="sky"></div>
+  <div class="vignette"></div>
+
+  <h1 class="title">I'm really, really sorry, Ishita!</h1>
+  <p class="subtitle">Sad Karne Ke Liye Sorry 💛(only favourite hindi song bhi lagaya hehe)</p>
+
+  <main class="container">
+    <section class="card">
+      <div class="photo-frame">
+        <img src="ishita.JPG" alt="Ishu's pic" />
+      </div>
+    </section>
+  </main>
+
+ 
+  <div class="cycle-container">
+    <img src="cycle.PNG" class="cycle" alt="Ishu on Cycle" />
+    <div class="cycle-speed">70 kmph</div>
+  </div>
+
+  <script>
+    const sky = document.getElementById('sky');
+    const WORDS = [
+      'sorry','माफ़ी','क्षमा','मुझे माफ़ करो',
+      'pardon','죄송해요','Yaar Ishuu','Sorry Ishu',
+      'desculpa','Please Naa','üzgünüm','متاسفم','对不起'
+    ];
+    function rand(min,max){ return Math.random()*(max-min)+min; }
+    function createSorry(){
+      const el = document.createElement('span');
+      el.className = 'sorry';
+      el.textContent = WORDS[Math.floor(Math.random()*WORDS.length)];
+      const startX = rand(-10, 110);
+      const endX = startX + rand(-30,30);
+      const rot = rand(-20,20);
+      const size = rand(16, 52);
+      const dur = rand(5,9);
+      el.style.setProperty('--startX', startX + 'vw');
+      el.style.setProperty('--endX', endX + 'vw');
+      el.style.setProperty('--rot', rot + 'deg');
+      el.style.setProperty('--dur', dur + 's');
+      el.style.fontSize = size + 'px';
+      sky.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }
+    setInterval(() => createSorry(), 150);
+  </script>
+</body>
+</html>
